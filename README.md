@@ -1,1 +1,1 @@
-print('welcome')
+欢迎！
