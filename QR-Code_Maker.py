@@ -6,6 +6,8 @@ import qrcode as cd
 import tkinter.messagebox as tkm
 import tkinter.ttk
 from PIL import Image
+from tkinter import filedialog
+import threading
 
 
 # 进度条函数
@@ -43,10 +45,9 @@ def main_pro(txt, l2, l1, gl):
                                 f'\n\'latin-1\' codec can\'t encode characters in position 0-{len(txt)}'
                                 f'\nClick \"确定\" and QUIT')
         sys.exit()
-    show()
-    code.add_data(txt)
-    code.make(fit=True)
     try:
+        code.add_data(txt)
+        code.make(fit=True)
         code_img = code.make_image(fill_color=l2, back_color=l1)
     except ValueError:
         tkm.showwarning(title='ValueError',
@@ -54,9 +55,10 @@ def main_pro(txt, l2, l1, gl):
                                 f'unknown color specifier: {l2} or {l1}\n'
                                 f'Click \"确定\" and QUIT')
         sys.exit()
+    show()
     code_size_w, code_size_h = code_img.size
     ratio = 6
-    if gl == '*.png':
+    if gl == '':
         pass
     else:  # 粘贴图片
         logo = Image.open(gl)
@@ -71,12 +73,18 @@ def main_pro(txt, l2, l1, gl):
     tkm.showinfo(message='二维码已生成，请在程序所在目录查找\n\"code.png\"', title='提示信息')
     with open('code.png', 'wb') as file:
         code_img.save(file)
+    print('Done')
+
+
+def generate_qrcode_in_thread():
+    a, b, c, d = url.get(), choose_color2.get(), choose_color1.get(), get_logo.get()
+    main_pro(a, b, c, d)
 
 
 def part1():
-    a, b, c, d = url.get(), choose_color2.get(), choose_color1.get(), get_logo.get()
     print('Loading......')
-    main_pro(a, b, c, d)
+    # 创建并启动一个新线程来执行二维码生成任务
+    threading.Thread(target=generate_qrcode_in_thread).start()
 
 
 def part0():
@@ -85,6 +93,15 @@ def part0():
                           fg='#000000',
                           compound='center')
     main_label.place(relx=0.5, rely=0.05, anchor='center')
+
+
+def find_picture():
+    win = tk.Tk()
+    win.withdraw()
+    file_path = filedialog.askopenfilename()
+    tl.delete(0, 'end')
+    tl.insert(0, file_path)
+    win.destroy()
 
 
 if __name__ == '__main__':
@@ -105,7 +122,7 @@ if __name__ == '__main__':
                      )
     # 输入框
     url = tk.StringVar()
-    input_ing = tk.Entry(window, width=50, textvariable=url)
+    input_ing = tk.Entry(window, width=30, textvariable=url)
     input_ing.delete(0, 0)
     # input_ing.insert(0, "默认文本...")
     label.place(relx=0.15, rely=0.2)
@@ -113,9 +130,9 @@ if __name__ == '__main__':
 
     # 背景颜色
     choose_color1 = tk.StringVar()
-    cc1 = tk.Entry(window, width=50, textvariable=choose_color1)
+    cc1 = tk.Entry(window, width=30, textvariable=choose_color1)
     cc1.delete(0, 'end')
-    cc1.insert(0, '#ffffff')
+    cc1.insert(0, '#FFFFFF')
 
     label1 = tk.Label(window,
                       text='背景颜色',
@@ -127,7 +144,7 @@ if __name__ == '__main__':
 
     # 前景颜色
     choose_color2 = tk.StringVar()
-    cc2 = tk.Entry(window, width=50, textvariable=choose_color2)
+    cc2 = tk.Entry(window, width=30, textvariable=choose_color2)
     cc2.delete(0, 'end')
     cc2.insert(0, '#000000')
 
@@ -146,9 +163,9 @@ if __name__ == '__main__':
                       fg='#000000',
                       compound='center')
     get_logo = tk.StringVar()
-    tl = tk.Entry(window, width=50, textvariable=get_logo)
-    tl.delete(0, 'end')
-    tl.insert(0, '*.png')
+    tl = tk.Entry(window, width=30, textvariable=get_logo)
+    # tl.delete(0, 'end')
+    # tl.insert(0, '*.png')
     label3.place(relx=0.15, rely=0.5)
     tl.place(relx=0.35, rely=0.5)
 
@@ -160,5 +177,13 @@ if __name__ == '__main__':
                      command=part1)
     # 把部件贴上去
     func.place(anchor='center', relx=0.5, rely=0.7)
+
+    insert = tk.Button(window,
+                       text='导入',
+                       fg="#000000",
+                       width=7,
+                       compound='top',
+                       command=find_picture)
+    insert.place(relx=0.65, rely=0.5)
 
     window.mainloop()
