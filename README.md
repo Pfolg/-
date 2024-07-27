@@ -5,3 +5,5 @@
 示例(扫出来是这个程序的主页)
 
 ![code](https://github.com/Pfolg/QR-code_maker/assets/166471137/2d2b5a36-590f-4083-a9a4-1633795ac359)
+
+此程序已集成到这个项目内:https://github.com/Pfolg/ToolsBox
