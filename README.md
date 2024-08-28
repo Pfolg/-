@@ -1,3 +1,7 @@
+此程序已集成到这个项目内:https://github.com/Pfolg/PGBox
+
+此仓库将不会再更新！
+
 界面
 
 ![image](https://github.com/Pfolg/QR-code_maker/assets/166471137/1c9dcf92-98c6-4d9e-9d0b-fc0bfc92c393)
@@ -5,5 +9,3 @@
 示例(扫出来是这个程序的主页)
 
 ![code](https://github.com/Pfolg/QR-code_maker/assets/166471137/2d2b5a36-590f-4083-a9a4-1633795ac359)
-
-此程序已集成到这个项目内:https://github.com/Pfolg/ToolsBox
