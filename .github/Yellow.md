@@ -1,3 +1,7 @@
+---
+permalink: /404.html
+---
+
 <style>
 body {
     background-color: #FFF200; /* Yellow */
